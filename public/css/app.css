@@ -1,0 +1,60 @@
+*{
+    font-family: 'Roboto Slab', serif;
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+input{
+    font-family: 'Roboto Slab', serif;
+}
+header{
+    border-bottom: solid rgb(231,225,217) 1px;
+}
+nav{
+    margin: auto;
+    padding: 0px;
+}
+.ro-collapse li{
+    font-weight: 400;
+    font-size: .9rem;
+    border-bottom: rgb(234, 234, 234) solid 1px;
+}
+@media only screen and (min-width: 992px){
+    .ro-navbar{
+        width: 90%;
+        margin: auto;
+    }
+    .logo-container{
+        width: 300px;
+    }
+    .ro-collapse li{
+        border-bottom: none;
+        position: relative;
+    }
+    .ro-collapse li:hover::after{
+        content: "";
+        height: 2px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        background-color: rgb(163,163,163);
+    }
+    .ro-collapse li:active::after{
+        content: "";
+        height: 2px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        background-color: rgb(163,163,163);
+    }
+    .cart-btn{
+        margin-top: 6px;
+        margin-left: 20px;
+    }
+    .navbar__tool{
+        color: rgb(52,58,64);
+        width: 300px; 
+        position: relative;
+        justify-content: flex-end;
+    }
+}

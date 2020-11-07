@@ -1,0 +1,169 @@
+/* global ///////////////////////////////////*/
+.sec{
+    width: 85%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: rgb(122,122,122);
+    font-weight: 300;
+    text-align: center;
+}
+.home button{
+    color: white;
+    font-size: 1.2rem;
+    background: rgb(52,58,64);
+    border: none; 
+    border-radius: 10px;
+    padding: 4px 73px;
+}
+.home button:hover{
+    background-color:  rgb(184, 174, 163);
+}
+.category-img{
+    width: 500px;
+    height: 320px;
+    object-fit: cover;
+}
+/* /////////////////////////////////////////// */
+
+/* general rules ///////////////////////////////////*/
+.font-size-2{
+    font-size: 1.5rem;
+    text-align: center;
+}
+.font-size-3{
+    font-size: 2.5rem;
+    font-weight: 100;
+}
+.light-brown{
+    color: rgb(166,124,99);
+}
+/* //////////////////////////////////////////*/
+
+.sec1{
+    position: relative;
+    /* height: 35vh;
+    margin: 30px auto;
+    background-size: cover;
+    background-position: center;
+    background-image: url(https://www.woodcraftsaustralia.com/wp-content/uploads/2020/08/71597466240_.pic_hd-1-scaled-1-e1598068023387.jpg);
+    box-shadow: black 0px 4px 23px; */
+}
+.sec1 img{
+    width: 100%;
+    max-width: 1000px;
+}
+.sec1 .img-1{
+    margin: 20px 0px;
+    box-shadow: rgb(52,58,64) 0px 1px 6px;
+}
+.s1-btn{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: auto;
+    padding: 4px 43px 4px 43px;
+}
+.sec2 {
+    color: rgb(163,163,163);
+    padding-bottom: 30px;
+}
+.sec2 img {
+    width: 400px;
+}
+.sec2 p {
+    margin: 20px 0px 20px 0px;
+    font-size: .8rem;
+    text-align: center;
+}
+.sec2 span {
+    color: rgb(52,122,94)
+}
+.section-3{
+    box-shadow: rgb(52,58,64) 0px 1px 10px;
+}
+.sec3 {
+    color: rgb(163,163,163);
+    padding: 50px 0px;
+}
+.sec3 img {
+    width: 100%;
+    max-width: 500px;
+}
+.sec3 p {
+    font-size: 1rem;
+    text-align: center;
+}
+.section-4 {
+    padding: 95px 0px 75px 0px;
+}
+.sec4 h3{
+    font-size: 2rem;
+    font-family: 'Dancing Script', cursive;
+}
+.section-5 {
+    box-shadow: rgb(52,58,64) 0px 1px 10px;
+    background-color: rgb(231,225,217); 
+    padding: 55px 0px;
+}
+.sec5 h3{
+    font-size: 2rem;
+    font-family: 'Dancing Script', cursive;
+}
+.section-6{
+    padding: 95px 0px;
+}
+.sec6 h3{
+    font-size: 2rem;
+    font-family: 'Dancing Script', cursive;
+}
+@media only screen and (min-width: 768px){
+    .sec2 p {
+        font-size: 1.2rem;
+    }
+    .sec3{
+        flex-direction: row;
+    }
+    .sec3 p {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+    .sec4{
+        width: 95%;
+    }
+    .sec4 p {
+    }
+    .sec5{
+        width: 95%;
+    }
+    .sec6{
+        width: 95%;
+    }
+    .sec1 .img-1{
+        margin: 40px 0px;
+        box-shadow: rgb(52,58,64) 0px 1px 6px;
+    }
+    .section-res{
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 90%;
+    }
+    .flex-context{
+        width: 350px;
+    }
+    .ro-p{
+        font-size: 3rem
+    }
+}
+
+@media only screen and (min-width: 992px){
+    .sec1 .img-1{
+        margin: 40px 0px 60px 0px;
+        box-shadow: rgb(52,58,64) 0px 1px 6px;
+    }
+    .flex-context{
+        width: 500px;
+    }
+}
