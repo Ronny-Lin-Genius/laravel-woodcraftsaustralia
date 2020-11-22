@@ -1,4 +1,4 @@
-@extends('layout2')
+@extends('layouts.layout2')
 
 @section('extra-header')
 <style>

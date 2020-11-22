@@ -8,22 +8,18 @@ use App\Models\Product;
 class CartController extends Controller
 {
     public function index(){
+        $in_cart_products = [];
         if(session('products') != null){
-            $products = [];
             foreach (session('products') as $product){
                 // check qutity greater than 0
-                if($product['qty'] >= 1){
-                    $current = Product::find($product['product_id'])->toArray();
-                    $current['pivot'] = ['quantity' => $product['qty']];
-                    $current['attribute'] = $product['attribute'];
-                    $products[] = $current;
+                if($product['quantity'] >= 1){                    
+                    $in_cart_products[] = $product;
                 } else {     
                     $this->destroy($product['product_id']);
                 }
             }
-        } else {
-            $products = [];
         }
+        return view('cart')->with('in_cart_products', $in_cart_products);
         // //prepare for session variable
         // $line_items = [];
         // foreach($products as $product){
@@ -53,15 +49,18 @@ class CartController extends Controller
         //     $session = [];
         // }
         // return view('cart')->with('in_cart_products', $products)->with('session', $session);
-        return view('cart')->with('in_cart_products', $products);
     }
+
     public function create(Request $request){
         $id = $request->id;
-        $attribute = $request->artribute;
-        $product = ['product_id' => $id, 'attribute' => $attribute, 'qty' => 1];
+        $product = Product::find($id)->toArray();
+        $product['attribute'] = $request->artribute;
+        $product['quantity'] = 1;
+        $product['image'] = explode(', ', $product['image']);
         session()->push('products', $product);
         return redirect()->route('cart.index');
     }
+
     public function update(Request $request){
         $product_ids = $request->product_id;
         $quantitys = $request->quantity;
@@ -78,22 +77,26 @@ class CartController extends Controller
         session(['products' => $reorgnized_products]);       
         return redirect()->route('cart.index');
     }
+
+    // Caculating the number of items in cart page
     public static function getItemQty(){
-        $cart_number = 0;
+        $in_cart_item_number = 0;
         if(session('products')){
             foreach(session('products') as $product){
-                $cart_number = $cart_number + $product['qty'];
+                $in_cart_item_number = $in_cart_item_number + $product['quantity'];
             }
         }
-        return $cart_number;
+        return $in_cart_item_number;
     }
+
+    // Caculating total price in cart page
     public static function getTotalPrice(){
         $totalPrice = 0;
         if(session('products')){
             foreach(session('products') as $product){
-                $price = Product::find($product['product_id'])->price;
-                $qty = $product['qty'];
-                $totalPrice = $totalPrice + $price * $qty;
+                $price = $product['price'];
+                $quantity = $product['quantity'];
+                $totalPrice = $totalPrice + $price * $quantity;
             }
         }
         return $totalPrice;

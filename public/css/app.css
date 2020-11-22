@@ -1,8 +1,10 @@
 *{
-    font-family: 'Roboto Slab', serif;
     box-sizing: border-box;
     padding: 0px;
     margin: 0px;
+}
+body{
+    font-family: 'Roboto Slab', serif;
 }
 input{
     font-family: 'Roboto Slab', serif;

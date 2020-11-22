@@ -33,17 +33,17 @@
                             <div class="d-flex justify-content-center align-items-center mb-3 p-1">
                                 <a class="{{'remove-from-cart-' . $loop->index}} remove-from-cart" href="{{ route('cart.delete', $product['id']) }}" style="font-size: 1.2rem; border: solid rgb(198,198,198) 1px; border-radius: 50%; width: 30px; height: 30px; color: rgb(198,198,198);">X</a>
                             </div> 
-                            <img src="{{$product['image']}}" style="width:100px; height:100px; object-fit: contain">
+                            <img src="{{asset('storage/images/products/' . $product['image'][0])}}" style="width:100px; height:100px; object-fit: contain">
                             <div class="d-flex justify-content-between justify-content-md-center align-items-center n p-3 mt-2">
                                 <span class="d-md-none" style="color: 858585; font-weight: 800">Name:</span>
                                 <span style="font-weight: 100;">{{ $product['attribute'] ? $product['name'] . " - " . $product['attribute'] : $product['name'] }}</span>
                             </div>
                             <div class="d-flex justify-content-between justify-content-md-center align-items-center p-3">
-                                <span class="d-md-none" style="color: 858585; font-weight: 800">Quanlity:</span>
+                                <span class="d-md-none" style="color: 858585; font-weight: 800">Quantity:</span>
                                 <div class="d-flex justify-content-center justify-content-md-start align-items-center">
                                     <i class="fas fa-chevron-up btn-increase" style="cursor: pointer; padding: 2px; color: rgb(198,198,198);"></i>
                                     <input type="hidden" name="product_id[]" value="{{$product['id']}}">
-                                    <input class="item-number" name="quantity[]" value="{{ $product['pivot']['quantity'] }}" type="text" style="width: 60px; outline: none; text-align: center; border: rgb(198,198,198) 2px solid; padding: 2px; border-left: none; border-right: none;">
+                                    <input class="item-number" name="quantity[]" value="{{ $product['quantity'] }}" type="text" style="width: 60px; outline: none; text-align: center; border: rgb(198,198,198) 2px solid; padding: 2px; border-left: none; border-right: none;">
                                     <i class="fas fa-chevron-down btn-decrease" style="cursor: pointer; padding: 2px; color: rgb(198,198,198);"></i>
                                 </div>
                             </div>

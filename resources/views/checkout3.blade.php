@@ -1,7 +1,12 @@
-@extends('layout2')
+@extends('layouts/layout2')
 
 @section('extra-header')
 <script src="https://js.stripe.com/v3/"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+<!-- Stripe client js file -->
+<script src="{{ asset('js/checkout3.js') }}" defer></script>
+<link href="{{ asset('css/checkout3.css') }}" rel="stylesheet">
+
 <style>
     .process-bar{
         margin-bottom: 40px;
@@ -14,14 +19,6 @@
         background-size: cover;
         background-image: url({{asset("pic/done.png")}});
     }
-    /* ul li:nth-child(2)::before{ */
-        /* content: "";
-        width: 40px;
-        height: 40px;
-        border-color: rgb(193,193,193);
-        background-size: cover;
-        background-image: url({{asset("pic/done.png")}}); */
-    /* } */
     ul li:nth-child(3), ul li:nth-child(3) a{
         color: black;
     }
@@ -48,54 +45,6 @@
     .confirmation__ro-flex a{   
         font-size: .9rem;
     }
-    h2{
-        color: rgb(52,58,64);
-        font-size: 1.2rem;
-        font-weight: 400;
-        margin-top: 50px;
-        margin-bottom: 10px;
-    }
-    h3{
-        color: rgb(52,58,64);
-        font-size: .9rem;
-        font-weight: 400;
-        margin-bottom: 13px;
-    }
-    /* .billing-address__ro-flex{
-        display: flex;
-        justify-content: space-between;
-    } */
-    .billing-form{
-        background-color: rgb(250,250,250);
-        border-top: solid 1px rgb(193,193,193);
-        grid-gap: 10px;
-        padding: 10px;
-    }
-    .field{
-        border: solid 1px rgb(193,193,193);
-        border-radius: 5px;
-        position: relative;
-    }
-    .field__label{
-        color: black;
-        font-size: 1rem;
-        font-weight: 200;
-        position: absolute;
-        top: 13px;
-        left: 10px;
-        pointer-events: none;
-        transition: 100ms;
-    }
-    .field__input{
-        border: none;
-        font-weight: 300;
-        width: 100%;
-        padding: 20px 0px 0px 10px;
-    }
-    .input-active{
-            font-size: .8rem;
-            top: 2px;
-        }
 </style>
 @endsection
 
@@ -143,76 +92,62 @@
             <a href="{{'shipping'}}">Change</a>
         </div>
     </div>
-    <h2>
-        Billing address
-    </h2>
-    <h3>
-        Select the address that matches your card or payment method
-    </h3>
-    <div class="billing-address">
-        <div class="billing-address__ro-flex" style="margin: 10px 10px 3px 10px;">
-            <input  class="billing-address__radio" type="radio" id="same" name="billing_address" value="Free Shipping (2 to 8 Business Days)" checked>
-            <label for="same">Same as shipping address</label><br/>
-        </div>
-        <div class="billing-address__ro-flex" style="margin: 0px 10px 3px 10px; padding-top: 10px; border-top: rgb(193,193,193) 1px solid;">
-            <input  class="billing-address__radio" type="radio" id="different" name="billing_address" value="">
-            <label for="different">Use a different billing address</label>
-        </div>
-        <form class="billing-form display-none" id="billing-form" method="post">
-            @csrf
-            <div class="field ro-grid__1-4">
-                <input class="field__input" name="first_name" type="text" required>
-                <span class="field__label">First name</span>
-            </div>
-            <div class="field ro-grid__4-7">
-                <input class="field__input" name="last_name" type="text" required>
-                <span class="field__label">Last name</span>
-            </div>
-            <div class="field ro-grid__1-7">
-                <input class="field__input" name="address" type="text" required>
-                <span class="field__label">Address</span>
-            </div>
-            <div class="field ro-grid__1-7">
-                <input class="field__input" name="city" type="text" required>
-                <span class="field__label">City</span>
-            </div>
-            <div class="field ro-grid__1-3">
-                <input class="field__input" name="country" type="text" required>
-                <span class="field__label">Country/Region</span>
-            </div>
-            <div class="field ro-grid__3-5">
-                <input class="field__input" name="state" type="text" required>
-                <span class="field__label">State/territory</span>
-            </div>
-            <div class="field ro-grid__5-7">
-                <input class="field__input" name="postcode" type="text" required>
-                <span class="field__label">Postcode</span>
-            </div>
-        </form>
-    </div>
+    <form id="payment-form">
+      <div id="card-element"><!--Stripe.js injects the Card Element--></div>
+      <button id="submit" class="stripe-submit">
+        <div class="spinner hidden" id="spinner"></div>
+        <span id="button-text">Pay</span>
+      </button>
+      <p id="card-error" role="alert"></p>
+      <p class="result-message hidden">
+        Payment succeeded, see the result in your
+        <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay again.
+      </p>
+    </form>
     <div class="display-grid mt-40 align-items-center">
         <a class="ro-grid__1-4" href="{{route('shipping')}}">Return to shipping</a>
-        <button class="ro-grid__4-7 payment-btn" id="checkout-button" data-secret="{{$session->id}}">Pay now</button>
+        <!-- <button class="ro-grid__4-7 payment-btn" id="checkout-button" data-secret="{{$session->id}}">Pay now</button> -->
     </div>
 </div>
 @endsection
 
 @section('extra-footer')
 <script>
-    var stripe = Stripe('pk_test_51GsMzhD2QcqvamdP5ZmYoSzJ0AqYv7rXvRSZI7QQb7XnGSJqANRQ5Q5PnfGJOj7QlS3dwrdoK3sWz5HPSNlvIefz00NafcrLvY');
-    var checkoutButton = document.getElementById('checkout-button');
-    checkoutButton.addEventListener('click', function() {
-        stripe.redirectToCheckout({
-            // Make the id field from the Checkout Session creation API response
-            // available to this file, so you can provide it as argument here
-            // instead of the {CHECKOUT_SESSION_ID} placeholder.
-            sessionId: '{{$session->id}}'
-        }).then(function (result) {
-            // If `redirectToCheckout` fails due to a browser or network
-            // error, display the localized error message to your customer
-            // using `result.error.message`.
-        });
-    });
+    // var stripe = Stripe('pk_test_51GsMzhD2QcqvamdP5ZmYoSzJ0AqYv7rXvRSZI7QQb7XnGSJqANRQ5Q5PnfGJOj7QlS3dwrdoK3sWz5HPSNlvIefz00NafcrLvY');
+    // var style = {
+    //   base: {
+    //     color: "#32325d",
+    //     fontFamily: 'Arial, sans-serif',
+    //     fontSmoothing: "antialiased",
+    //     fontSize: "16px",
+    //     "::placeholder": {
+    //         // f07439 32325d
+    //       color: "#32325d"
+    //     }
+    //   },
+    //   invalid: {
+    //     fontFamily: 'Arial, sans-serif',
+    //     color: "#fa755a",
+    //     iconColor: "#fa755a"
+    //   }
+    // };
+
+    // var elements = stripe.elements();
+    // var cardElement = elements.create('card', {style : style} );
+    // cardElement.mount('#card-element');
+
+    // var checkoutButton = document.getElementById('checkout-button');
+    // checkoutButton.addEventListener('click', function() {
+    //     stripe.redirectToCheckout({
+    //         // Make the id field from the Checkout Session creation API response
+    //         // available to this file, so you can provide it as argument here
+    //         // instead of the {CHECKOUT_SESSION_ID} placeholder.
+    //         sessionId: '{{$session->id}}'
+    //     }).then(function (result) {
+    //         // If `redirectToCheckout` fails due to a browser or network
+    //         // error, display the localized error message to your customer
+    //         // using `result.error.message`.
+    //     });
+    // });
 </script>
-<script src="{{asset('js/checkout3.js')}}"></script>
 @endsection

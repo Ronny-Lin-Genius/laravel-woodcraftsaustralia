@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +25,11 @@ Route::post('checkout/shipping', 'App\Http\Controllers\CheckoutController@postIn
 Route::get('/checkout/shipping', 'App\Http\Controllers\CheckoutController@shipping')->name('shipping');
 Route::post('checkout/payment', 'App\Http\Controllers\CheckoutController@postShipping')->name('postShipping');
 Route::get('/checkout/payment', 'App\Http\Controllers\CheckoutController@payment')->name('payment');
+Route::get('/create', 'App\Http\Controllers\CheckoutController@create');
+Route::post('/create', 'App\Http\Controllers\CheckoutController@create');
 // Route::post('/checkout/payment', 'App\Http\Controllers\CheckoutController@payment')->name('postPayment');
-Route::get('/store', 'App\Http\Controllers\ProductController@index')->name('store');
+// Route::get('/store', 'App\Http\Controllers\ProductController@index')->name('store');
+Route::get('/store', [ProductController::class, 'index'])->name('store');
 Route::get('/store/show/{id}', 'App\Http\Controllers\ProductController@show')->name('product.show');
 Route::get('/cart', 'App\Http\Controllers\CartController@index')->name('cart.index');
 Route::post('/cart/create', 'App\Http\Controllers\CartController@create')->name('cart.create');
